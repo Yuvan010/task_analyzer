@@ -15,6 +15,8 @@ This system allows users to input tasks (via form or JSON), processes them using
 
 The app is fully interactive, supports bulk JSON input, and updates dynamically each time the user analyzes new tasks.
 
+**GitHub Repository:** [Yuvan010/task_analyzer](https://github.com/Yuvan010/task_analyzer)
+
 ## 🧠 Scoring Algorithm (Core Logic)
 
 Each task receives a combined weighted score based on four major factors:
@@ -60,6 +62,17 @@ score = (importance × W1) + (urgency × W2) + (quick_win_bonus × W3) + (depend
 
 Weights are adjusted depending on the user's selected sorting strategy.
 
+### Algorithm Explanation
+
+The priority scoring algorithm works by combining multiple factors to determine which tasks should be completed first. The algorithm considers:
+
+- **Urgency weighting**: Overdue tasks and tasks with approaching deadlines receive significantly higher scores to ensure time-sensitive work is prioritized
+- **Importance scaling**: User-defined importance (1-10) is multiplied by a weight factor to ensure critical tasks rise to the top
+- **Quick-win bonus**: Tasks requiring less than 2 hours of effort receive a bonus multiplier, encouraging productivity through small completions
+- **Dependency chaining**: Tasks that block other tasks (dependencies) receive priority boosts proportional to how many tasks depend on them
+
+The algorithm adapts based on the selected sorting strategy, adjusting the weight coefficients (W1-W4) to emphasize different factors. For example, the "Deadline Driven" strategy increases urgency weights while reducing importance weights, whereas "High Impact" does the opposite.
+
 ## 🌐 API Endpoints
 
 ### `POST /api/tasks/analyze/`
@@ -99,7 +112,7 @@ Each strategy dynamically adjusts the scoring weights.
 - Error validation (invalid JSON, missing fields)
 - Eisenhower Matrix visualization (bonus feature)
 
-## 🎁 Bonus Features Completed
+## 🎁 Bonus Challenges Completed
 
 ### 1. Comprehensive Unit Tests
 
@@ -113,6 +126,18 @@ Created a suite of tests that cover:
 - Handling invalid date formats safely
 
 These tests validate the scoring system and ensure all logic remains consistent.
+
+**Running the tests:**
+```bash
+python manage.py test
+```
+
+Expected output:
+```
+Found 6 tests.
+......
+OK
+```
 
 ### 2. Eisenhower Matrix Visualization
 
@@ -145,25 +170,37 @@ frontend/
 └── script.js
 ```
 
-## 🔧 Installation & Setup
+## 🔧 Setup Instructions
 
-1. **Install dependencies:**
+### Prerequisites
+- Python 3.8 or higher
+- pip (Python package manager)
+
+### Installation Steps
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Yuvan010/task_analyzer.git
+   cd task_analyzer
+   ```
+
+2. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
 
-2. **Apply migrations:**
+3. **Apply migrations:**
    ```bash
    python manage.py migrate
    ```
 
-3. **Run the backend:**
+4. **Run the backend:**
    ```bash
    python manage.py runserver
    ```
 
-4. **Open the frontend:**
-   Open `frontend/index.html` in your browser.
+5. **Open the frontend:**
+   Open `frontend/index.html` in your browser or navigate to `http://localhost:8000` if serving through Django.
 
 ## 🧪 Running Tests
 
@@ -181,12 +218,32 @@ OK
 
 ## ⏱ Time Breakdown
 
-- Scoring Algorithm: 1 hr
-- Backend API: 40 min
-- Frontend UI Development: 1 hr
-- Sorting Strategy Logic: 20 min
-- Bonus – Unit Tests: 45 min
-- Bonus – Eisenhower Matrix: 35 min
+Approximate time spent on each section:
+
+- **Scoring Algorithm:** 1 hour
+- **Backend API:** 40 minutes
+- **Frontend UI Development:** 1 hour
+- **Sorting Strategy Logic:** 20 minutes
+- **Bonus – Unit Tests:** 45 minutes
+- **Bonus – Eisenhower Matrix:** 35 minutes
+
+**Total Development Time:** ~4 hours 20 minutes
+
+## 🎯 Design Decisions
+
+### Why Django for Backend?
+Django was chosen for its robust ORM, built-in REST capabilities, and rapid development features. The framework provides excellent structure for organizing the scoring logic and API endpoints.
+
+### Scoring Algorithm Trade-offs
+- **Multi-factor approach:** Rather than using a single metric, the algorithm combines urgency, importance, effort, and dependencies to provide more nuanced prioritization
+- **Weight-based flexibility:** Different sorting strategies allow users to adapt the algorithm to their work style without changing the core logic
+- **Quick-win bonus:** This design decision encourages momentum by surfacing easy completions, which psychological research shows improves productivity
+
+### Frontend Architecture
+A vanilla JavaScript approach was used to keep the frontend lightweight and dependency-free. The UI updates dynamically using DOM manipulation, making it responsive without requiring a full framework.
+
+### Dependency Handling
+The system detects circular dependencies to prevent infinite loops and provides clear error messages. Tasks are treated as a directed acyclic graph (DAG) where blocking tasks naturally rise in priority.
 
 ## 🔮 Future Improvements
 
