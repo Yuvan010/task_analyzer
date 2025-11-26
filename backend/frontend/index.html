@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Smart Task Analyzer — Smart Balance</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+
+  <header class="app-header">
+    <h1>Smart Task Analyzer</h1>
+    <p>AI-assisted prioritization for productive teams</p>
+  </header>
+
+  <main class="container">
+
+    <section class="card">
+      <h2>Add Task</h2>
+      <form id="task-form" class="form-grid">
+        <input id="title" placeholder="Task title*" required />
+        <input id="due_date" type="date" />
+        <input id="estimated_hours" type="number" step="0.5" placeholder="Estimated hours*" value="1" min="0" />
+        <input id="importance" type="number" min="1" max="10" placeholder="Importance *" value="5" />
+        <input id="dependencies" placeholder="Dependencies (comma-separated IDs)" />
+        <button type="submit" class="btn-primary">Add Task</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Bulk Input</h2>
+      <textarea id="bulk"
+        placeholder='[{"title":"Task A","due_date":"2025-11-30","estimated_hours":2,"importance":8,"dependencies":[]}]'>
+      </textarea>
+
+      <div class="actions-row">
+        <button id="add-bulk" class="btn-secondary">Load Bulk</button>
+
+        <select id="strategy" class="dropdown">
+          <option value="smart">Smart Balance</option>
+          <option value="fast">Fastest Wins</option>
+          <option value="impact">High Impact</option>
+          <option value="deadline">Deadline Driven</option>
+        </select>
+
+        <button id="analyze" class="btn-primary">Analyze Tasks</button>
+        <button id="suggest" class="btn-outline">Top 3 Suggest</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Tasks</h2>
+      <ol id="task-list" class="task-list"></ol>
+    </section>
+
+    <section class="card">
+      <h2>Results</h2>
+      <div id="results"></div>
+    </section>
+
+    <!-- BONUS: Eisenhower Matrix View -->
+<h2>Eisenhower Matrix</h2>
+<div id="matrix" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top:20px;">
+
+    <div id="urgent-important" style="padding:15px; border:2px solid red;">
+        <h3>Urgent & Important</h3>
+        <ul></ul>
+    </div>
+
+    <div id="noturgent-important" style="padding:15px; border:2px solid orange;">
+        <h3>Not Urgent but Important</h3>
+        <ul></ul>
+    </div>
+
+    <div id="urgent-notimportant" style="padding:15px; border:2px solid blue;">
+        <h3>Urgent but Not Important</h3>
+        <ul></ul>
+    </div>
+
+    <div id="noturgent-notimportant" style="padding:15px; border:2px solid grey;">
+        <h3>Not Urgent & Not Important</h3>
+        <ul></ul>
+    </div>
+
+</div>
+
+
+  </main>
+
+  <footer>
+    Built for Singularium Internship Assignment
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
